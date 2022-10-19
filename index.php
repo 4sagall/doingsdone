@@ -44,6 +44,16 @@ $tasks = [
         'execution' => false
     ]
 ];
+// function for count tasks
+function counter_tasks (array $task_list, $project_name) {
+    $amount = 0;
+    foreach ($task_list as $key => $item) {
+        if ($item["project"] == $project_name) {
+            $amount++;
+        } else continue;
+    } 
+    return $amount;
+};
 
 ?>
 <!DOCTYPE html>
@@ -90,9 +100,10 @@ $tasks = [
 <!-- На месте «название проекта» показывайте содержимое очередного массива. -->
 <?php foreach ($projects as $key => $value) : ?>
                         <li class="main-navigation__list-item">
-                        <a class="main-navigation__list-item-link" href="#"><?php print($value); ?></a>
-                            <span class="main-navigation__list-item-count">0</span>
-                            </li>
+                            <a class="main-navigation__list-item-link" href="#"><?php print($value); ?></a>
+<!-- function counter_tasks -->
+                                <span class="main-navigation__list-item-count"> <?php print(counter_tasks ($tasks, $value)); ?>  </span>
+                        </li>
 <?php endforeach; ?>
 
                     </ul>
