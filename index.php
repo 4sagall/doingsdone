@@ -44,7 +44,11 @@ $tasks = [
         'execution' => false
     ]
 ];
-// function for count tasks
+/** funcion for count tasks in each project
+ * @param array - массив задач
+ * @param  string - название проекта
+ * @return number 
+ * */
 function counter_tasks (array $task_list, $project_name) {
     $amount = 0;
     foreach ($task_list as $key => $item) {
