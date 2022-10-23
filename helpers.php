@@ -138,7 +138,7 @@ function include_template($name, array $data = []) {
     extract($data);
     require $name;
 
-    $result = ob_get_clean();
-
-    return $result;
+    return ob_get_clean();
 }
+
+?>
