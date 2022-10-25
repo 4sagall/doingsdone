@@ -49,7 +49,7 @@
 <!-- Замените все содержимое этой таблицы данными из массива задач. Если у задачи статус «выполнен», то строке с этой задачей добавить класс "task--completed". Если задача из массива выполнена, а переменная $show_complete_tasks равна нулю, то такую задачу в списке мы не показываем (пропуск итерации цикла через ключевое слово continue). -->
 <?php foreach($tasks as $key => $value)  : ?>   
     <?php if($value["execution"] && $show_complete_tasks) continue; ?>                
-                    <tr class="tasks__item task <?php if($value["execution"]) print(" task--completed"); ?>">
+                    <tr class="tasks__item task <?php if($value["execution"]) { print(" task--completed"); } else if (time_left($value["date"])) print(" task--important") ?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
                                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">

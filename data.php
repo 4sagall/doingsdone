@@ -48,6 +48,12 @@ $tasks = [
         "date" => "",
         "project" => $projects[3],
         "execution" => false
+    ],
+    [
+        "object" => "Проверить задание по работе с датами",
+        "date" => "01.11.2022",
+        "project" => $projects[1],
+        'execution' => false
     ]
 ];
 
