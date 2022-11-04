@@ -11,13 +11,13 @@ CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(128) NOT NULL UNIQUE,
-    name VARCHAR(128),
-    password CHAR(128) 
+    name VARCHAR(128) NOT NULL,
+    password CHAR(128) NOT NULL
 );
 
 CREATE TABLE projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128),
+    name VARCHAR(128) NOT NULL,
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );

@@ -5,13 +5,13 @@
  * @param  string - название проекта
  * @return number 
  * */
-function counter_tasks (array $task_list, $project_name) {
+function counter_tasks (array $tasks, $project) {
     $amount = 0;
-    foreach ($task_list as $key => $item) {
-        if ($item["project"] == $project_name) {
+    foreach ($tasks as $key => $value) {
+        if ($value['project_id'] == $project) {
             $amount++;
-        } else continue;
-    } 
+        } else continue; 
+    }
     return $amount;
 };
 
@@ -22,9 +22,8 @@ function counter_tasks (array $task_list, $project_name) {
  */
 function time_left ($date) {
     date_default_timezone_set("Europe/Moscow");
-    $cur_time = strtotime("now");
+    $cur_time = strtotime('now');
     $spec_time = strtotime($date);
     if(floor(($spec_time - $cur_time)/86400) <= 1) return true;
 };
 
-?>
