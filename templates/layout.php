@@ -4,14 +4,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $title ?></title>
+    <title><?= $title; ?></title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
 <body>
-<h1 class="visually-hidden"><?= $title ?></h1>
+<h1 class="visually-hidden"><?= $title; ?></h1>
 
 <div class="page-wrapper">
     <div class="container container--with-sidebar">
@@ -25,7 +25,7 @@
 
                 <div class="main-header__side-item user-menu">
                     <div class="user-menu__data">
-                        <p>Sergey Anatolievich</p>
+                        <p> $current_user </p>
 
                         <a href="#">Выйти</a>
                     </div>
@@ -34,7 +34,7 @@
         </header>
 
         <div class="content">
-                                <?= $content ?> 
+                                <?= $content; ?> 
         </div>
     </div>
 </div>
