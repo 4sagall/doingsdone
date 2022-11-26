@@ -1,6 +1,6 @@
 <?php
 
-/** Функция вчисляет количество задач в каждой категории проектов
+/** Функция вычисляет количество задач в каждой категории проектов
  * @param array - массив задач
  * @param  string - название проекта
  * @return number 
@@ -27,3 +27,15 @@ function time_left ($date) {
     if(floor(($spec_time - $cur_time)/86400) <= 1) return true;
 };
 
+/** Функция сравнивает переданный в нее id с имеющимися в массиве project, т.е. функция проверякт наличие проекта с данным id
+ * @param int $pid - фунция получает аргумент и @param array $projects - массив с имеющимися проектами, и сравнивает id проектов с переданным аргументом
+ * @return boolean - возвращает булево значение, если совпадение найдено - 1, совпадений нет - 0.    
+ */
+function getProjectById($pid, $projects) {
+    foreach ($projects as $key => $value) {
+        if ($value['id'] == $pid) return $pid;           
+    }
+    return null;
+};
+
+?>
