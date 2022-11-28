@@ -35,8 +35,11 @@ else {
 
 $id = $_GET['id'] ?? null;                              //проверка на существование параметра запроса с идентификатором проекта 
 $project_id = getProjectById($id, $projects);           // функция проверяет $id на соответствие с id полученных ранее проектов -> 16-20
+$user = $projects['user'];
+
 
 if ($id === null || !is_int($id)) {
+    
     $error = http_response_code(404);
     $page_content = include_template('error.php', ['error' => $error]);
 }
@@ -77,7 +80,8 @@ if ($id === "") {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'projects' => $projects,
-    'title' => 'Дела в порядке'
+    'title' => 'Дела в порядке',
+    'user' => $user
 ]);
 
 print($layout_content);
