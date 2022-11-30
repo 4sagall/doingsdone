@@ -36,7 +36,7 @@ else {
 $id = $_GET['id'] ?? null;                              //проверка на существование параметра запроса с идентификатором проекта 
 $project_id = getProjectById($id, $projects);           // функция проверяет $id на соответствие с id полученных ранее проектов -> 16-20
 
-if ($id === null || !is_int($id)) {
+if ($id == null || !is_int($id)) {
     $error = http_response_code(404);
     $page_content = include_template('error.php', ['error' => $error]);
 }
