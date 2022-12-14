@@ -61,6 +61,7 @@ if ($id === "") {
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'projects' => $projects,
+    'FILES' => $_FILES,
     'title' => 'Дела в порядке'
 ]);
 

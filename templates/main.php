@@ -5,11 +5,11 @@
                     <ul class="main-navigation__list">
 
 <!-- На месте «название проекта» показывайте содержимое очередного массива. -->
-<?php foreach ($projects as $key => $value) : ?>
+<?php foreach ($projects as $project) : ?>
                         <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link  <?php if($id == $value['id']) print(" main-navigation__list-item--active"); ?>" href="index.php?id=<?php print($value['id']); ?>"> <?php print(htmlspecialchars($value['name'])); ?></a>
+                            <a class="main-navigation__list-item-link  <?php if($id == $project['id']) print(" main-navigation__list-item--active"); ?>" href="index.php?id=<?= $project['id']; ?>"> <?= htmlspecialchars($project['name']); ?></a>
 <!-- function counter_tasks -->
-                                <span class="main-navigation__list-item-count"> <?php print($value['task_count']); ?>  </span>
+                                <span class="main-navigation__list-item-count"> <?php print($project['task_count']); ?>  </span>
                         </li>
 <?php endforeach; ?>
 
@@ -47,21 +47,21 @@
         <table class="tasks">
 
 <!-- Замените все содержимое этой таблицы данными из массива задач. Если у задачи статус «выполнен», то строке с этой задачей добавить класс "task--completed". Если задача из массива выполнена, а переменная $show_complete_tasks равна нулю, то такую задачу в списке мы не показываем (пропуск итерации цикла через ключевое слово continue). -->
-<?php foreach($tasks as $key => $value)  : ?>   
-    <?php if($value['status'] && $show_complete_tasks) continue; ?>                
-                    <tr class="tasks__item task <?php if($value['status']) { print(" task--completed"); } else if(time_left($value['date_end'])) print(" task--important"); ?>">
+<?php foreach($tasks as $task)  : ?>   
+    <?php if($task['status'] && $show_complete_tasks) continue; ?>                
+                    <tr class="tasks__item task <?php if($task['status']) { print(" task--completed"); } else if(time_left($task['date_end'])) print(" task--important"); ?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
                                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text"> <?= htmlspecialchars($value['name']); ?> </span>
+                                <span class="checkbox__text"> <?= htmlspecialchars($task['name']); ?> </span>
                             </label>
                         </td>
 
                         <td class="task__file">
-                            <a class="download-link" href="#">*.pdf</a>
+                            <a class="download-link" href="<?= isset($task['file'])? $task['file'] : "#"; ?>" target="_blank"> <?= isset($task['file'])? $task['file'] : "file.psd"; ?> </a>
                         </td>
                         
-                        <td class="task__date"> <?= htmlspecialchars($value['date_end']); ?> </td>
+                        <td class="task__date"> <?= htmlspecialchars($task['date_end']); ?> </td>
                     </tr>
 <?php endforeach; ?>
 
@@ -80,7 +80,6 @@
   <td class="task__controls">
   </td>
 </tr>
-
 <?php endif; ?>
 
                 </table>
