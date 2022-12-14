@@ -28,7 +28,7 @@
       <label class="form__label" for="date">Дата выполнения</label>
       <?php $classname = (isset($errors['date_end'])) ? " form__input--error" : ""; ?>
 
-      <input class="form__input form__input--date <?= $classname; ?>" type="text" name="date" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+      <input class="form__input form__input--date <?= $classname; ?>" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
       <p class="form__message"><?= $errors['date_end'] ?? ""; ?></p>
     </div>
 

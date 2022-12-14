@@ -53,19 +53,19 @@ if (isset($_FILES['file'])) {                           //Валидация ф�
     $finfo = finfo_open(FILEINFO_MIME_TYPE);            //если глобальный массив $_FILES не пустой, определяем интересующие нас значения файла
     $file_name = $_FILES['file']['name'];
     $file_size = $_FILES['file']['size'];
-}
-      
-if ($file_size > 3000000) {
-    $errors['file'] = "Максимальный размер файла: 3Mb";
-} 
-else {
-    move_uploaded_file ($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
-    $task['path'] = 'uploads/' . $file_name;
-    $task['file'] = $file_name;  
+
+    if ($file_size > 3000000) {
+        $errors['file'] = "Максимальный размер файла: 3Mb";
+    } 
+    else {
+        move_uploaded_file ($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
+        $task['path'] = 'uploads/' . $file_name;
+        $task['file'] = $file_name;  
+    }
 }
 
 if(count($errors)) {                                                            //проверяем массив с ошибками на наличие ошибок 
-    $page_content = include_template('add.php', [                               //передаем в шаблон ошибки для отображения 
+    $page_content = include_template('add-form-task.php', [                               //передаем в шаблон ошибки для отображения 
         'task' => $task,
         'errors' => $errors,
         'projects' => $projects 
