@@ -57,13 +57,13 @@ function validateProjectId($value, $projects) {
     else return null;
 };
 
-/** Функция для валидации даты. Содержимое поля «дата завершения» должно быть датой в формате «ГГГГ-ММ-ДД». 
- * Эта дата должна быть больше или равна текущей.
+/** Функция для валидации даты . Эта дата должна быть больше или равна текущей.
  */
 function validateDate($value) {
     date_default_timezone_set("Europe/Moscow");
-        if(!date_create_from_format($value, $format = 'YY-MM-DD') || strtotime('now') < strtotime($value)) {
-            return "Содержимое поля «дата завершения» должно быть датой в формате «ГГГГ-ММ-ДД. Дата должна быть позднее или равна текущей";
-        }
-        else return null; 
+    if($value) {
+        if(!is_date_valid($value)) return "Содержимое поля - дата завершения, должно быть датой в формате ГГГГ-ММ-ДД"; 
+        if(strtotime('now') < strtotime($value)) return "Дата должна быть позднее или равна текущей";
+    }  
+    else return null; 
 };

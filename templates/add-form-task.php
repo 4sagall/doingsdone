@@ -28,12 +28,13 @@
       <label class="form__label" for="date">Дата выполнения</label>
       <?php $classname = (isset($errors['date_end'])) ? " form__input--error" : ""; ?>
 
-      <input class="form__input form__input--date <?= $classname; ?>" type="date" name="date" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+      <input class="form__input form__input--date <?= $classname; ?>" type="text" name="date" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
       <p class="form__message"><?= $errors['date_end'] ?? ""; ?></p>
     </div>
 
     <div class="form__row">
-      <label class="form__label" for="file">Файл (*.pdf)</label>
+      <label class="form__label" for="file">Файл</label>
+      <?php $classname = (isset($errors['file'])) ? " form__input--error" : ""; ?>
 
       <div class="form__input-file">
         <input class="visually-hidden" type="file" name="file" id="file" value="">
@@ -41,6 +42,7 @@
         <label class="button button--transparent" for="file">
           <span>Выберите файл</span>
         </label>
+        <p class="form__message"><?= $errors['file'] ?? ""; ?></p>
       </div>
     </div>
 
