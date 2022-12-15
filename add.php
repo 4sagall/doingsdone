@@ -19,7 +19,7 @@ else {
     }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                                             //Какой метод был использован для запроса страницы; к примеру 'GET', 'HEAD', 'POST', 'PUT'
-    $required = ['name', 'project', 'date_end'];
+    $required = ['name', 'project', 'date'];
     $errors = [];
 
     $rules = [                                          //создаем асоциативный массив, в котором каждому ключю из поля формы присваивается значение анонимной фунции, которая валидирует значение поля 
@@ -29,54 +29,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
         'project' => function($value) use ($projects) {
             return validateProjectId($value, $projects);
         },
-        'date_end' => function($value) {
+        'date' => function($value) {
             return validateDate($value);
         } 
     ];
 
-$task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date_end' => FILTER_DEFAULT], add_empty: true); //передаем в переменную $task интересующие нас поля формы
+    $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT], add_empty: true); //передаем в переменную $task интересующие нас поля формы
 
-foreach($task as $key => $value) {                              //обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
-    if(isset($rules[$key])) {
-        $rule = $rules[$key];
-        $errors[$key] = $rule($value);
+    foreach($task as $key => $value) {                              //обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
+        if(isset($rules[$key])) {
+            $rule = $rules[$key];
+            $errors[$key] = $rule($value);
     }
 
     if(in_array($key, $required) && empty($value)) {
-        $errors[$key] = "Поле $key должно быть заполнено";
+        $errors[$key] = "Поле должно быть заполнено";
     }
-}
+    }
 
-$errors = array_filter($errors);                        //убираем из массива с ошибками все значения типа null
+    $errors = array_filter($errors);                        //убираем из массива с ошибками все значения типа null
 
-if (isset($_FILES['file'])) {                           //Валидация файла - проверяем загружен ли файл  
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);            //если глобальный массив $_FILES не пустой, определяем интересующие нас значения файла
-    $file_name = $_FILES['file']['name'];
-    $file_size = $_FILES['file']['size'];
+    if (isset($_FILES['file'])) {                           //Валидация файла - проверяем загружен ли файл  
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);            //если глобальный массив $_FILES не пустой, определяем интересующие нас значения файла
+        $file_name = $_FILES['file']['name'];
+        $file_size = $_FILES['file']['size'];
 
     if ($file_size > 3000000) {
         $errors['file'] = "Максимальный размер файла: 3Mb";
     } 
     else {
         move_uploaded_file ($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
-        $task['path'] = 'uploads/' . $file_name;
-        $task['file'] = $file_name;  
+        $task['file'] = 'uploads/' . $file_name;   
     }
-}
+    }
 
-if(count($errors)) {                                                            //проверяем массив с ошибками на наличие ошибок 
-    $page_content = include_template('add-form-task.php', [                               //передаем в шаблон ошибки для отображения 
-        'task' => $task,
-        'errors' => $errors,
-        'projects' => $projects 
-    ]);             
-}
-else {
-    $sql = 'INSERT INTO tasks (date_add, name, project_id, date_end, file, user_id) 
-        VALUES (NOW(), ?,?,?,?,1)';                                                   //подготовленное выражение запроса на внесение в БД задачи 
+    if(count($errors)) {                                                            //проверяем массив с ошибками на наличие ошибок 
+        $page_content = include_template('add-form-task.php', [                     //передаем в шаблон ошибки для отображения 
+            'task' => $task,
+            'errors' => $errors,
+            'projects' => $projects 
+        ]);             
+    }
+    else {
+        $sql = 'INSERT INTO tasks (date_add, name, project_id, date_end, file, user_id) 
+            VALUES (NOW(), ?,?,?,?,1)';                                                 //подготовленное выражение запроса на внесение в БД задачи 
         
-    $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
-    $result = mysqli_stmt_execute($stmt);                            //Выполняет подготовленное утверждение
+        $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
+        $result = mysqli_stmt_execute($stmt);                            //Выполняет подготовленное утверждение
 
     if ($result) {                                                  //проверяем успешно ли выполнен запрос на внесение задачи в базу данных
         $task_id = mysqli_insert_id($link);                                 //определяем id новой задачи    
