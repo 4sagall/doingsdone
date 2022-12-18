@@ -13,15 +13,15 @@ else {
         
     $result = mysqli_query($link, $sql); 
     
-    if ($result) {                                                      //запрос выполнен успешно
+    if ($result) {                                                       //запрос выполнен успешно
         $projects = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);      //обрабатываем результат и форматируем его в виде двумерного массива
     }
     else {
-        $error = mysqli_error($link);                                           //получить текст последней ошибки 
+        $error = mysqli_error($link);                                             //получить текст последней ошибки 
         $page_content = include_template('error.php', ['error' => $error]);
     }
 
-$id = $_GET['id'] ?? null;                              //проверка на существование параметра запроса с идентификатором проекта 
+$id = $_GET['id'] ?? null;                               //проверка на существование параметра запроса с идентификатором проекта 
 $project_id = getProjectById($id, $projects);           // функция проверяет $id на соответствие с id полученных ранее проектов -> 16-20
 
 if ($id == null || !is_int($id)) {
@@ -34,7 +34,7 @@ if ($project_id) {
         if ($result = mysqli_query($link, $sql)) {
             $tasks = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);
             
-            $page_content = include_template('main.php', [                               //передаем в шаблон результат запроса - массив задач
+            $page_content = include_template('main.php', [                         //передаем в шаблон результат запроса - массив задач
             'projects' => $projects,
             'tasks' => $tasks,
             'show_complete_tasks' => $show_complete_tasks,
@@ -43,7 +43,7 @@ if ($project_id) {
         } 
 }
 if ($id === "") {
-    $sql = 'SELECT * FROM tasks WHERE user_id=1';                            //запрос на получение из БД данных из таблицы задач - tasks для пользователя = 1/2/3
+    $sql = 'SELECT * FROM tasks WHERE user_id=1';                           //запрос на получение из БД данных из таблицы задач - tasks для пользователя = 1/2/3
 
     if ($result = mysqli_query($link, $sql)) {
         $tasks = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);
@@ -58,10 +58,12 @@ if ($id === "") {
 }
 }
 
+
+
+
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'projects' => $projects,
-    'FILES' => $_FILES,
     'title' => 'Дела в порядке'
 ]);
 

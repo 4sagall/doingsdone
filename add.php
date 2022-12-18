@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
     $required = ['name', 'project', 'date'];
     $errors = [];
 
-    $rules = [                                          //создаем асоциативный массив, в котором каждому ключю из поля формы присваивается значение анонимной фунции, которая валидирует значение поля 
+    $rules = [                                          //создаем ассоциативный массив, в котором каждому ключю из поля формы присваивается значение анонимной фунции, которая валидирует значение поля
         'name' => function($value) {
             return validateTaskName($value, 200); 
         },
@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
             return validateDate($value);
         } 
     ];
-
-    $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT], add_empty: true); //передаем в переменную $task интересующие нас поля формы
-
-    foreach($task as $key => $value) {                              //обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
+//передаем в переменную $task интересующие нас поля формы
+    $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT], add_empty: true); 
+//обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
+    foreach($task as $key => $value) {
         if(isset($rules[$key])) {
             $rule = $rules[$key];
             $errors[$key] = $rule($value);
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
     } 
     else {
         move_uploaded_file ($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
-        $task['file'] = 'uploads/' . $file_name;   
+        $task['file'] = 'uploads/' . $file_name;
     }
     }
 
@@ -71,15 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
         ]);             
     }
     else {
-        $sql = 'INSERT INTO tasks (date_add, name, project_id, date_end, file, user_id) 
-            VALUES (NOW(), ?,?,?,?,1)';                                                 //подготовленное выражение запроса на внесение в БД задачи 
+        $sql = 'INSERT INTO tasks (name, project_id, date_end, file, user_id) 
+            VALUES (?,?,?,?,1)';                                                 //подготовленное выражение запроса на внесение в БД задачи 
         
         $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
         $result = mysqli_stmt_execute($stmt);                            //Выполняет подготовленное утверждение
 
     if ($result) {                                                  //проверяем успешно ли выполнен запрос на внесение задачи в базу данных
-        $task_id = mysqli_insert_id($link);                                 //определяем id новой задачи    
-        header(header: 'Location: index.php?id=');                          //используется для отправки HTTP-заголовка
+        $task_id = mysqli_insert_id($link);                         //определяем id новой задачи
+        $task['path'] = 'uploads/' . $file_name;
+        $task['file_size'] = $file_size;    
+
+        header(header: 'Location: index.php?id=');                  //используется для отправки HTTP-заголовка
     }
 }
 }
