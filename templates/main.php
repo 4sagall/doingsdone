@@ -58,7 +58,7 @@
                         </td>
 
                         <td class="task__file">
-                            <a class="download-link" href="<?= isset($key['file']) ? $key['file'] : "#"; ?>" target="_blank"> <?= isset($key['file']) ? $key['file'] : "file.psd"; ?> </a>
+                            <a class="download-link" href="<?= isset($key['file']) ? $key['file'] : "#"; ?>" target="_blank"> <?= isset($key['file']) ? mb_substr($key['file'], 8) : "file.psd"; ?> </a>
                         </td>
                         
                         <td class="task__date"> <?= htmlspecialchars($key['date_end']); ?> </td>
