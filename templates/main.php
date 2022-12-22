@@ -47,21 +47,21 @@
         <table class="tasks">
 
 <!-- Замените все содержимое этой таблицы данными из массива задач. Если у задачи статус «выполнен», то строке с этой задачей добавить класс "task--completed". Если задача из массива выполнена, а переменная $show_complete_tasks равна нулю, то такую задачу в списке мы не показываем (пропуск итерации цикла через ключевое слово continue). -->
-<?php foreach($tasks as $key)  : ?>   
-    <?php if($key['status'] && $show_complete_tasks) continue; ?>                
-                    <tr class="tasks__item task <?php if($key['status']) { print(" task--completed"); } else if(time_left($key['date_end'])) print(" task--important"); ?>">
+<?php foreach($tasks as $task)  : ?>   
+    <?php if($task['status'] && $show_complete_tasks) continue; ?>                
+                    <tr class="tasks__item task <?php if($task['status']) { print(" task--completed"); } else if(time_left($task['date_end'])) print(" task--important"); ?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
                                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                                <span class="checkbox__text"> <?= htmlspecialchars($key['name']); ?> </span>
+                                <span class="checkbox__text"> <?= htmlspecialchars($task['name']); ?> </span>
                             </label>
                         </td>
 
                         <td class="task__file">
-                            <a class="download-link" href="<?= isset($key['file']) ? $key['file'] : "#"; ?>" target="_blank"> <?= isset($key['file']) ? mb_substr($key['file'], 8) : "file.psd"; ?> </a>
+                            <a class="download-link" href="<?= isset($task['file']) ? $task['file_path'] : "#"; ?>" target="_blank"> <?= isset($task['file']) ? $task['file'] : "file.psd"; ?> </a>
                         </td>
                         
-                        <td class="task__date"> <?= htmlspecialchars($key['date_end']); ?> </td>
+                        <td class="task__date"> <?= htmlspecialchars($task['date_end']); ?> </td>
                     </tr>
 <?php endforeach; ?>
 

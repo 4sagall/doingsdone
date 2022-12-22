@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
         }
         if ($file_size > 0 && $file_size < 3000000) {
             move_uploaded_file ($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
-            $task['file'] = 'uploads/' . $file_name;
+            $task['file'] = $file_name;
+            $task['file_path'] = 'uploads/' . $file_name;
         } 
         if ($file_size == 0) {
             $task['file'] = null;
@@ -74,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {                                     
         ]);             
     }
     else {
-        $sql = 'INSERT INTO tasks (name, project_id, date_end, file, user_id) 
-            VALUES (?,?,?,?,1)';                                                 //подготовленное выражение запроса на внесение в БД задачи 
+        $sql = 'INSERT INTO tasks (name, project_id, date_end, file, user_id, file_path) 
+            VALUES (?,?,?,?,1,?)';                                                 //подготовленное выражение запроса на внесение в БД задачи 
         
         $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
         $result = mysqli_stmt_execute($stmt);                            //Выполняет подготовленное утверждение
