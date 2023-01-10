@@ -60,12 +60,8 @@
             </div>
 
             <div class="form__row form__row--controls">
-              <p class="error-message"><?= (!empty($errors)) ? "Пожалуйста, исправьте ошибки в форме:" : ""; ?></p>
-              <?php foreach($errors as $key => $value): ?>
-                <p class="error-message"><?= $value; ?></p>
-              <?php endforeach; ?>
-
-
+              <p class="error-message"><?= (!empty($errors)) ? "Пожалуйста, исправьте ошибки в форме" : ""; ?></p>
+              
               <input class="button" type="submit" name="" value="Зарегистрироваться">
             </div>
           </form>

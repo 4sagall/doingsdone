@@ -71,14 +71,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {   //проверяем суперг�
     }
 }
 else {
-    $layout_content = include_template('register-form.php', [ 
+
+    $errors = [];
+    $layout_content = include_template('register-form.php', [  
         'errors' => $errors,
         'title' => 'Дела в порядке'
     ]);   
 }
 
+
+
 $layout_content = include_template('register-form.php', [ 
-    'errors' => $errors,   
+    'errors' => $errors,
     'title' => 'Дела в порядке'
 ]);
 
