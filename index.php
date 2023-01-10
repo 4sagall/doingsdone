@@ -1,6 +1,6 @@
 <?php
 require_once ('init.php');              //подключаем файл с данными для соединения с БД
-$show_complete_tasks = rand(0, 1);      // показывать или нет выполненные задачи
+$show_complete_tasks = random_int(0, 1);      // показывать или нет выполненные задачи
 
 if (!$link) {
     $error = mysqli_connect_error();

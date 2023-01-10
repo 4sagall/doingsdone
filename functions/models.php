@@ -26,6 +26,9 @@ function getTasks_ProjectId_UserId(mysqli $link, $project_id, $user_id) {
     if ($result) {
         return mysqli_fetch_all($result, mode: MYSQLI_ASSOC);        
     }
+    else {
+        return mysqli_error($link);
+    }
 };
 
 /**
@@ -55,12 +58,32 @@ function getAllProjects(mysqli $link) {
 
 /**
  * Функция обработки запроса на добавление в таблицу tasks новой задачи 
- * @param object $link результат выполнения функции подключения к базе
- * @param array $tasks массив данных из формы  
+ * @param object $link результат выполнения функции подключения к базе, @param array $tasks массив данных из формы  
  * @param return - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
  * */
 function addNewTask(mysqli $link, $task, $user_id) {
     $sql = 'INSERT INTO tasks (name, project_id, date_end, file, user_id) VALUES (?,?,?,?,' . $user_id . ')';  //подготовленное выражение запроса на внесение в БД задачи 
     $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
     return mysqli_stmt_execute($stmt);                                //возвращает результат выполнения подготовленного утверждения
+}; 
+
+/**
+ * Функция обработки запроса к базе на получение всех записей таблицы users 
+ * @param object $link результат выполнения функции подключения к базе
+ * @param return - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
+ * */
+function getAllUsers(mysqli $link) {
+    $sql = 'SELECT * FROM users';            
+    return mysqli_query($link, $sql);
+};
+
+/**
+ * Функция обработки запроса на добавление в таблицу users нового пользователя 
+ * @param object $link результат выполнения функции подключения к базе, @param array $new_user массив данных из формы  
+ * @param return - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
+ * */
+function addNewUser (mysqli $link, $new_user) {
+    $sql = 'INSERT INTO users (email, password, name) VALUES (?,?,?)';     //подготовленное выражение запроса на внесение в БД задачи 
+    $stmt = db_get_prepare_stmt($link, $sql, $new_user);                       //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
+    return mysqli_stmt_execute($stmt);                                     //возвращает результат выполнения подготовленного утверждения
 }; 
