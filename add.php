@@ -1,6 +1,7 @@
 <?php
 require_once ('init.php'); //подключаем файл с данными для соединения с БД
 
+/** @var object $link в объекте хранятся данные соединения с базой данных */
 if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php', ['error' => $error]);
@@ -15,14 +16,16 @@ else {
         $error = mysqli_error($link);                                        //получить текст последней ошибки 
         $page_content = include_template('error.php', ['error' => $error]);
     }
-        $page_content = include_template('add-form-task.php', [ 'projects' => $projects ]);        //передаем в шаблон формы результат запроса - массив проектов
+    /** @var array $projects */
+    $page_content = include_template('add-form-task.php', [ 'projects' => $projects ]);        //передаем в шаблон формы результат запроса - массив проектов
     }
     
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод был использован для запроса страницы; к примеру 'GET', 'HEAD', 'POST', 'PUT'
         $required = ['name', 'project', 'date'];
         $errors = [];
-        
-        $rules = [                                         //создаем ассоциативный массив, в котором каждому ключю из поля формы присваивается значение анонимной фунции, которая валидирует значение поля
+
+        /** @var array $projects */
+        $rules = [
             'name' => function($value) {
                 return validateTaskName($value, 200); 
             },
@@ -34,7 +37,7 @@ else {
             } 
         ];
         
-        $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT], add_empty: true); //передаем в переменную $task интересующие нас поля формы
+        $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT]); //передаем в переменную $task интересующие нас поля формы
         
         foreach($task as $key => $value) { //обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
             if(isset($rules[$key])) {
@@ -70,7 +73,7 @@ else {
         }
         
         if(count($errors)) {                                            //проверяем массив с ошибками на наличие ошибок 
-            $page_content = include_template('add-form-task.php', [     //передаем в шаблон ошибки для отображения 
+            $page_content = include_template('add-form-task.php', [
                 'task' => $task,
                 'errors' => $errors,
                 'projects' => $projects 
@@ -86,7 +89,8 @@ else {
         }
     }
     else {
-        $page_content = include_template('add-form-task.php', [ 'projects' => $projects ]);   
+        /** @var array $projects */
+        $page_content = include_template('add-form-task.php', [ 'projects' => $projects ]);
     }
     
     $layout_content = include_template('layout.php', [

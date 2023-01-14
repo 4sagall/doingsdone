@@ -9,31 +9,46 @@
     <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
-<body>
+<?php $classname = (isset($_SESSION['id'])) ? "" : " body-background"; ?>
+<body   class="<?= $classname; ?>">
 <h1 class="visually-hidden"><?= $title; ?></h1>
 
 <div class="page-wrapper">
-    <div class="container container--with-sidebar">
-        <header class="main-header">
-            <a href="/id136918">
-                <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
-            </a>
+    <?php $classname = (isset($_SESSION['id'])) ? " container--with-sidebar" : ""; ?>
+    <div class="container <?= $classname; ?>">
 
-            <div class="main-header__side">
-                <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
+        <?php if (!isset($_SESSION['id'])): ?>
+            <header class="main-header">
+                <a href="#">
+                    <img src="../img/logo.png" width="153" height="42" alt="Логитип Дела в порядке">
+                </a>
 
-                <div class="main-header__side-item user-menu">
-                    <div class="user-menu__data">
-                        <p> $current_user </p>
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--transparent" href="auth.php">Войти</a>
+                </div>
+            </header>
+        <?php else: ?>
+            <header class="main-header">
+                <a href="/id136918">
+                    <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
+                </a>
 
-                        <a href="#">Выйти</a>
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
+
+                    <div class="main-header__side-item user-menu">
+                        <div class="user-menu__data">
+                            <p> <?= $_SESSION['name']; ?> </p>
+
+                            <a href="logout.php">Выйти</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+        <?php endif; ?>
 
-        <div class="content"> 
-            <?= $content; ?>  
+        <div class="content">
+            <?= $content; ?>
         </div>
     </div>
 </div>
@@ -46,7 +61,11 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
+        <?php if (!isset($_SESSION['id'])): ?>
+            <p>Хочешь сделать лучше — сделай сам.</p>
+        <?php else: ?>
+            <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>
+        <?php endif; ?>
 
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
