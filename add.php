@@ -6,7 +6,7 @@ if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php', ['error' => $error]);
 } else {
-    $result = getAllProjects($link);            //Функция обработки запроса к базе на получение всех записей таблицы projects 
+    $result = getProjects_CountTasks($link, $user_id);          //Функция запроса к базе - проекты с подсчетом задач в каждом проекте для пользователя user_id
 
     if ($result) {                               //запрос выполнен успешно
         $projects = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);       //обрабатываем результат и форматируем его в виде двумерного массива
@@ -15,7 +15,10 @@ if (!$link) {
         $page_content = include_template('error.php', ['error' => $error]);
     }
     /** @var array $projects */
-    $page_content = include_template('add-form-task.php', ['projects' => $projects]);        //передаем в шаблон формы результат запроса - массив проектов
+    $page_content = include_template('add-form-task.php', [
+        'projects' => $projects,
+        'tasks' => $tasks
+    ]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод был использован для запроса страницы; к примеру 'GET', 'HEAD', 'POST', 'PUT'

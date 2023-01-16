@@ -4,30 +4,12 @@
     
         <nav class="main-navigation">
           <ul class="main-navigation__list">
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Входящие</a>
-              <span class="main-navigation__list-item-count">24</span>
-            </li>
-
-            <li class="main-navigation__list-item main-navigation__list-item--active">
-              <a class="main-navigation__list-item-link" href="#">Работа</a>
-              <span class="main-navigation__list-item-count">12</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Здоровье</a>
-              <span class="main-navigation__list-item-count">3</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Домашние дела</a>
-              <span class="main-navigation__list-item-count">7</span>
-            </li>
-
-            <li class="main-navigation__list-item">
-              <a class="main-navigation__list-item-link" href="#">Авто</a>
-              <span class="main-navigation__list-item-count">0</span>
-            </li>
+              <?php foreach ($projects as $project) : ?>
+                  <li class="main-navigation__list-item">
+                      <a class="main-navigation__list-item-link" href="index.php?id="> <?= htmlspecialchars($project['name']); ?></a>
+                      <span class="main-navigation__list-item-count"> <?= $project['task_count']; ?></span>
+                  </li>
+              <?php endforeach; ?>
           </ul>
         </nav>
 

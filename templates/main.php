@@ -7,7 +7,6 @@
             <?php foreach ($projects as $project) : ?>
             <li class="main-navigation__list-item">
                 <a class="main-navigation__list-item-link  <?php if($id == $project['id']) print(" main-navigation__list-item--active"); ?>" href="index.php?id=<?= $project['id']; ?>"> <?= htmlspecialchars($project['name']); ?></a>
-                <!-- function counter_tasks -->
                 <span class="main-navigation__list-item-count"> <?php print($project['task_count']); ?>  </span>
             </li>
             <?php endforeach; ?>
