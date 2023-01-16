@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //require_once ('helpers.php');
 //require_once ('data.php');
 require_once ('functions/models.php');

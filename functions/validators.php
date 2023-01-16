@@ -140,7 +140,7 @@ function auth_Email ($value, $users)
 {
     if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
         foreach ($users as $user) {
-            if ($value === $user['email']) {
+            if ($value == $user['email']) {
                 return null;
                 break;
             } else {
