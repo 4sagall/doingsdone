@@ -57,7 +57,9 @@ function getTasks_UserId(mysqli $link, $user_id)
  * */
 function getAllProjects(mysqli $link)
 {
-    $sql = 'SELECT * FROM projects';            //запрос на получение из БД списка проектов
+    $sql = 'SELECT p.id, p.name, count(t.id) AS task_count 
+    FROM projects p JOIN tasks t ON p.id = t.project_id 
+    GROUP BY id';
     return mysqli_query($link, $sql);
 };
 

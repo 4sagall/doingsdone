@@ -6,18 +6,19 @@ if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php', ['error' => $error]);
 } else {
-    $result = getProjects_CountTasks($link, $user_id);          //Функция запроса к базе - проекты с подсчетом задач в каждом проекте для пользователя user_id
+    $result = getAllProjects($link);                            //Функция обработки запроса к базе на получение всех записей таблицы projects
+    $task_counter =  getProjects_CountTasks($link, $user_id);   //Функция обработки запроса к базе на получение количества задач по проектам у данного user_id
 
-    if ($result) {                               //запрос выполнен успешно
+    if ($result) {                               //запросы выполнен успешно
         $projects = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);       //обрабатываем результат и форматируем его в виде двумерного массива
+
     } else {
         $error = mysqli_error($link);                                        //получить текст последней ошибки 
         $page_content = include_template('error.php', ['error' => $error]);
     }
     /** @var array $projects */
     $page_content = include_template('add-form-task.php', [
-        'projects' => $projects,
-        'tasks' => $tasks
+        'projects' => $projects
     ]);
 }
 
