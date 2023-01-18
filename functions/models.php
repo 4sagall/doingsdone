@@ -59,7 +59,7 @@ function getAllProjects(mysqli $link)
 {
     $sql = 'SELECT p.id, p.name, count(t.id) AS task_count 
     FROM projects p JOIN tasks t ON p.id = t.project_id 
-    GROUP BY id';
+    GROUP BY p.id';
     return mysqli_query($link, $sql);
 };
 

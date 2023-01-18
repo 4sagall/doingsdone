@@ -7,8 +7,6 @@ if (!$link) {
     $page_content = include_template('error.php', ['error' => $error]);
 } else {
     $result = getAllProjects($link);                            //Функция обработки запроса к базе на получение всех записей таблицы projects
-    $task_counter =  getProjects_CountTasks($link, $user_id);   //Функция обработки запроса к базе на получение количества задач по проектам у данного user_id
-
     if ($result) {                               //запросы выполнен успешно
         $projects = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);       //обрабатываем результат и форматируем его в виде двумерного массива
 
@@ -38,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
             return validateDate($value);
         }
     ];
-
     $task = filter_input_array(INPUT_POST, ['name' => FILTER_DEFAULT, 'project' => FILTER_DEFAULT, 'date' => FILTER_DEFAULT]); //передаем в переменную $task интересующие нас поля формы
 
     foreach ($task as $key => $value) { //обходим массив и проверяем поля на наличие правил и при установлении правил, валидируем введенное значение
@@ -51,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
             $errors[$key] = "Поле должно быть заполнено";
         }
     }
-
     $errors = array_filter($errors);                //убираем из массива с ошибками все значения типа null
 
     if (isset($_FILES)) {                           //Валидация файла - проверяем загружен ли файл
@@ -62,13 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
         if ($file_size > 3000000) {
             $errors['file'] = "Максимальный размер файла: 3Mb";
         }
-
         if ($file_size > 0 && $file_size < 3000000) {
             move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $file_name);
             $task['file'] = $file_name;
             $task['file_path'] = 'uploads/' . $file_name;
         }
-
         if ($file_size == 0) {
             $task['file'] = null;
         }
