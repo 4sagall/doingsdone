@@ -70,7 +70,7 @@ function getAllProjects(mysqli $link)
  * */
 function addNewTask(mysqli $link, $task, $user_id)
 {
-    $sql = 'INSERT INTO tasks (name, project_id, date_end, file, user_id) VALUES (?,?,?,?,' . $user_id . ')';  //подготовленное выражение запроса на внесение в БД задачи
+    $sql = 'INSERT INTO tasks (name, project_id, date_end, file, file_path, user_id) VALUES (?,?,?,?,?,' . $user_id . ')';  //подготовленное выражение запроса на внесение в БД задачи
     $stmt = db_get_prepare_stmt($link, $sql, $task);                  //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
     return mysqli_stmt_execute($stmt);                                //возвращает результат выполнения подготовленного утверждения
 }; 
