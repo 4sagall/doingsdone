@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
     /** @var array $projects */
     $rules = [
         'name' => function ($value) {
-            return validateTaskName($value, 200);
+            return validateTaskName($value, 300);
         },
         'project' => function ($value) use ($projects) {
             return validateProjectId($value, $projects);
@@ -65,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
         }
         if ($file_size == 0) {
             $task['file'] = null;
+            $task['file_path'] = null;
         }
     }
 

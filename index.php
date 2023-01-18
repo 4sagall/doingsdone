@@ -19,11 +19,12 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
             $page_content = include_template('error.php', ['error' => $error]);
         }
 
-        $id = $_GET['id'] ?? null;                       //проверка на существование параметра запроса с идентификатором проекта
+        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';          //проверка на существование параметра запроса с идентификатором проекта
+        $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
         /** @var array $projects функция проверяет $id на соответствие с id полученных ранее проектов -> 12 */
         $project_id = getProjectById($id, $projects);
 
-        if ($id == null || !is_int($id)) {
+        if (!is_int($id)) {
             $error = http_response_code(404);
             $page_content = include_template('error.php', ['error' => $error]);
         }
@@ -40,6 +41,16 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($id === "") {
             $tasks = getTasks_UserId($link, $user_id);              //Функция обработки запроса на получение из БД данных из таблицы задач - tasks для user_id
+            $page_content = include_template('main.php', [
+                'projects' => $projects,
+                'tasks' => $tasks,
+                'show_complete_tasks' => $show_complete_tasks,
+                'id' => $id
+            ]);
+        }
+
+        if ($search) {
+            $tasks = getSearchNameTasks($link, $search);
             $page_content = include_template('main.php', [
                 'projects' => $projects,
                 'tasks' => $tasks,

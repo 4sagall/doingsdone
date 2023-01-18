@@ -110,3 +110,19 @@ function get_NameIdUser (mysqli $link, $user)
     mysqli_stmt_execute($stmt);
     return mysqli_stmt_get_result($stmt);
 };
+
+/**
+ * Функция обработки запроса на осуществление полнотекстового поиска из таблицы tasks
+ * @param object $link результат выполнения функции подключения к базе,
+ * @param string $search строка из формы поиска
+ * @param return - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
+ * */
+function getSearchNameTasks(mysqli $link, $search)
+{
+    $search = trim($search);
+    $sql = 'SELECT * FROM tasks WHERE MATCH(name) AGAINST(?)';
+    $stmt = db_get_prepare_stmt($link, $sql, $search);
+    mysqli_stmt_execute($stmt);
+    return mysqli_stmt_get_result($stmt);
+};
+

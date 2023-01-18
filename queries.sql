@@ -37,5 +37,9 @@ UPDATE tasks SET status=1 WHERE name="Собседование в IT компа�
 UPDATE tasks SET name="Заменить карбюратор", project_id=5 WHERE id=6;
 
 /* Запрос на добавление поля в таблицу - tasks */
-ALTER TABLE tasks ADD COLUMN file_path VARCHAR(200);  
+ALTER TABLE tasks ADD COLUMN file_path VARCHAR(200);
+
+/** SQL-инструкция на создание полнотекстового индекса для поля «название» в таблице задач tasks */
+CREATE FULLTEXT INDEX name_search ON tasks(name);
+
 
