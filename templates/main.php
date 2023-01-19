@@ -67,7 +67,6 @@
 
         <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице -->
         <?php if ($show_complete_tasks) : ?>
-
             <tr class="tasks__item task task--completed">
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
@@ -75,9 +74,17 @@
                         <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
                     </label>
                 </td>
-
                 <td class="task__date">10.10.2019</td>
                 <td class="task__controls"></td>
+            </tr>
+        <?php endif; ?>
+
+        <!-- показывать следующий тег <tr/>, если по запросу $_GET search ни чего не найдено -->
+        <?php if (isset($tasks) && !empty($search)) : ?>
+            <tr class="tasks__item task">
+                <td class="task__select">
+                    <p>Ничего не найдено по вашему запросу "<?= $search; ?>"</p>
+                </td>
             </tr>
         <?php endif; ?>
     </table>
