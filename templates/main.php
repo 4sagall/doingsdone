@@ -80,7 +80,7 @@
         <?php endif; ?>
 
         <!-- показывать следующий тег <tr/>, если по запросу $_GET search ни чего не найдено -->
-        <?php if (isset($tasks) && !empty($search)) : ?>
+        <?php if (!empty($search) && (empty($tasks) || mysqli_num_rows($tasks) === 0)) : ?>
             <tr class="tasks__item task">
                 <td class="task__select">
                     <p>Ничего не найдено по вашему запросу "<?= $search; ?>"</p>
