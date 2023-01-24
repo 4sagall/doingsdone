@@ -1,4 +1,5 @@
 <?php
+/**  Валидация формы из сценария add.php */
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  * Примеры использования:
@@ -15,7 +16,7 @@ function is_date_valid(string $date): bool
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
     return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
-};
+}
 
 /**
  * Функция для для получения значений из POST-запроса и сохранения введенных пользователем значений в полях формы
@@ -23,28 +24,32 @@ function is_date_valid(string $date): bool
 function getPostVal($name)
 {
     return $_POST[$name] ?? "";
-};
+}
 
-//Валидация формы из сценария add.php
-/** 
+/**
  * Функция для валидации введенной задачи на пустую строку и длину названия задачи
  * @param string $value - принимает строку и @param int $max - целое число, определяет введено ли название и сравнивает длину строки со значением
- * @return string - возвращает строку
+ * @param $max
+ * @return string|null - возвращает строку
  */
-function validateTaskName($value, $max)
+function validateTaskName(string $value, $max): ?string
 {
     if (!empty($value)) {
         $len = strlen($value);
         if ($len > $max) return "Имя задачи - не более " . $max . " символов";
-    } else return null;
-};
+    } else {
+        return null;
+    }
+    return null;
+}
 
 /**
  * Функция для валидации введенного проекта, сравнивает переданный в нее id с имеющимися в массиве $projects, т.е. функция проверякт наличие проекта с данным id
- * @param int $value - фунция получает аргумент и @param array $projects - массив с имеющимися проектами, и сравнивает id проектов с переданным аргументом
+ * @param $value - фунция получает аргумент и @param array $projects - массив с имеющимися проектами, и сравнивает id проектов с переданным аргументом
+ * @return string|null;
  * В свою очередь функция array_key_exists — проверяет, присутствует ли в массиве указанный ключ или индекс
  */
-function validateProjectId($value, $projects)
+function validateProjectId($value, $projects): ?string
 {
     foreach ($projects as $project) {
         if ($value == $project['id']) {
@@ -52,15 +57,15 @@ function validateProjectId($value, $projects)
         }
     }
     return "Указан несуществующий проект";
-};
+}
 
 /**
  * Функция для валидации даты. Эта дата должна быть больше или равна текущей и соответствовать формату.
  * Для валидации формата используется другая функция - is_date_valid()
- * @param string - принимает один аргумент в виде строки
- * @return возвращает текст ошибкиб либо null, если ошибки нет
+ * @param string $value - принимает один аргумент в виде строки
+ * @return string|null текст ошибки либо null, если ошибки нет
  */
-function validateDate($value)
+function validateDate(string $value): ?string
 {
     date_default_timezone_set("Europe/Moscow");
     $cur_time = strtotime('now');
@@ -74,34 +79,37 @@ function validateDate($value)
     } else {
         return null;
     }
-};
-//Валидация формы из сценария register.php
+    return null;
+}
+
+/**  Валидация формы из сценария register.php */
 /**
  * Функция для валидации email
  * @param string $value - принимает строку, определяет введен ли email и является ли он корректным
  * с использованием стандартной функции filter_var
- * @return string - возвращает текст ошибки или null - если ошибки валидации нет
+ * @param $users
+ * @return string|null - возвращает текст ошибки или null - если ошибки валидации нет
  */
-function validate_Email($value, $users)
+function validate_Email(string $value, $users): ?string
 {
     if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
         foreach ($users as $user) {
             if ($value === $user['email']) {
                 return "Пользователь с указанным e-mail уже зарегистрирован. Введите другой e-mail";
-                break;
             }
         }
     } else {
         return "Введен не корректный адрес e-mail";
     }
-};
+    return null;
+}
 
 /**
  * Функция для валидации пароля на пустую строку и на возможность хеширования с помощью стандартной функции password_hash
  * @param string $value - принимает строку, определяет введен ли пароль и хеширует его
- * @return string - возвращает строку ошибки или null - если ошибки валидации нет
+ * @return string|null - возвращает строку ошибки или null - если ошибки валидации нет
  */
-function validate_Pass($value)
+function validate_Pass(string $value): ?string
 {
     if (!empty($value)) {
         if (password_hash($value, PASSWORD_DEFAULT)) {
@@ -110,65 +118,88 @@ function validate_Pass($value)
             return "Введенный пароль некорректен, поскольку не может быть зашифрован";
         }
     }
-};
+    return null;
+}
 
 /**
  * Функция для валидации имени пользователя на пустую строку и длину названия задачи
  * @param string $value - принимает строку и @param int $max - целое число, определяет введено ли название и сравнивает длину строки со значением
- * @return string - возвращает строку
+ * @param $users
+ * @return string|null - возвращает строку
  */
-function validate_Name($value, $users)
+function validate_Name(string $value, $users): ?string
 {
     if (!empty($value)) {
         foreach ($users as $user) {
             if ($value === $user['name']) {
                 return "Пользователь с именем " . $value . " уже зарегистрирован. Введите другое имя";
-                break;
-            } else {
-                continue;
             }
         }
     }
-};
-// Валидация формы из сценария auth.php
+    return null;
+}
+
+/** Валидация формы из сценария auth.php */
 /**
  * Функция, которая сравнивает email с имеющимися в базе зарегистрированных пользователей
  * @param string $value - принимает строку, определяет введен ли email и является ли он корректным с использованием стандартной функции filter_var
- * @return string - возвращает текст ошибки или null - если ошибки авторизации нет
+ * @param $users
+ * @return string|null - возвращает текст ошибки или null - если ошибки авторизации нет
  */
-function auth_Email ($value, $users)
+function auth_Email (string $value, $users): ?string
 {
     if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
         foreach ($users as $user) {
             if ($value == $user['email']) {
                 return null;
-                break;
-            } else {
-                continue;
             }
         }
         return "Указанный e-mail не зарегистрирован";
     } else {
         return "Введен не корректный адрес e-mail";
     }
-};
+}
 
 /**
  * Функция для валидации пароля на пустую строку и на возможность хеширования с помощью стандартной функции password_hash
  * @param string $value - принимает строку, определяет введен ли пароль и хеширует его
- * @return string - возвращает строку ошибки или null - если ошибки валидации нет
+ * @param $users
+ * @return string|null - возвращает строку ошибки или null - если ошибки валидации нет
  */
-function auth_Pass($value, $users)
+function auth_Pass(string $value, $users): ?string
 {
     if (!empty($value)) {
         foreach ($users as $user) {
             if (password_verify($value, $user['password'])) {
                 return null;
-                break;
-            } else {
-                continue;
             }
         }
         return "Введен неверный пароль";
     }
-};
+    return null;
+}
+
+/** Валидация формы из сценария add-project.php */
+/**
+ * Функция для валидации названия проекта
+ * @param string $value - принимает строку
+ * @param $max
+ * @param array $projects_user
+ * @return string|null - возвращает строку ошибки или null - если ошибки валидации нет
+ */
+function validateProject(string $value, $max, array $projects_user): ?string
+{
+    if (!empty($value)) {
+        $len = strlen($value);
+        if ($len > $max) {
+            return "Название проекта - не более " . $max . " символов";
+        } else {
+            foreach ($projects_user as $project) {
+                if ($value === $project['name']) {
+                    return "Такой проект уже существует. Выберете другое название проекта";
+                }
+            }
+        }
+    }
+    return null;
+}

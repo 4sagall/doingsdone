@@ -4,7 +4,7 @@
     
         <nav class="main-navigation">
           <ul class="main-navigation__list">
-              <?php foreach ($projects_user as $project) : ?>
+              <?php foreach ($projects as $project) : ?>
                   <li class="main-navigation__list-item">
                       <a class="main-navigation__list-item-link" href="index.php?id="> <?= htmlspecialchars($project['name']); ?></a>
                       <span class="main-navigation__list-item-count"> <?= $project['task_count']; ?></span>
@@ -13,7 +13,7 @@
           </ul>
         </nav>
 
-    <a class="button button--transparent button--plus content__side-button" href="form-project.html">Добавить проект</a>
+    <a class="button button--transparent button--plus content__side-button" href="add-project.php">Добавить проект</a>
   </section>
   
   <main class="content__main">
@@ -33,8 +33,8 @@
   
         <?php $classname = (isset($errors['project'])) ? " form__input--error" : ""; ?>
         <select class="form__input form__input--select <?= $classname; ?>" name="project" id="project">
-          <?php foreach ($projects as $project) : ?>
-          <option value="<?= $project['id']; ?>" <?= (getPostVal('project') == $project['id']) ? " selected" : ""; ?>> <?= $project['name']; ?> </option>
+          <?php foreach ($projects_user as $project) : ?>
+          <option value="<?= $project['id']; ?>" <?= (getPostVal('project') == $project['id']) ? " selected" : ""; ?>> <?= htmlspecialchars($project['name']); ?> </option>
           <?php endforeach; ?>
         </select>
         <p class="form__message"><?= $errors['project'] ?? ""; ?></p>
