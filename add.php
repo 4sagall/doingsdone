@@ -6,9 +6,12 @@ if (!$link) {
     $error = mysqli_connect_error();
     $page_content = include_template('error.php', ['error' => $error]);
 } else {
-    $result = getAllProjects($link);                            //Функция обработки запроса к базе на получение всех записей таблицы projects
-    if ($result) {                               //запросы выполнен успешно
-        $projects = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);       //обрабатываем результат и форматируем его в виде двумерного массива
+    $res1 = getAllProjects($link);                            //Функция обработки запроса к базе на получение всех записей таблицы projects
+    $res2 = getProjects_CountTasks($link, $user_id);          //Функция на получение проектов с подсчетом задач в каждом проекте для пользователя с user_id
+
+    if ($res1 && $res2) {                               //запросы выполнен успешно
+        $projects = mysqli_fetch_all($res1, mode: MYSQLI_ASSOC);       //обрабатываем результат и форматируем его в виде двумерного массива
+        $projects_user = mysqli_fetch_all($res2, mode: MYSQLI_ASSOC);
 
     } else {
         $error = mysqli_error($link);                                        //получить текст последней ошибки 
@@ -16,7 +19,8 @@ if (!$link) {
     }
     /** @var array $projects */
     $page_content = include_template('add-form-task.php', [
-        'projects' => $projects
+        'projects' => $projects,
+        'projects_user' => $projects_user
     ]);
 }
 
@@ -73,7 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
         $page_content = include_template('add-form-task.php', [
             'task' => $task,
             'errors' => $errors,
-            'projects' => $projects
+            'projects' => $projects,
+            'projects_user' => $projects_user
         ]);
     } else {
         $result = addNewTask($link, $task, $user_id);      //Функция обработки запроса на добавление в таблицу tasks новой задачи
@@ -85,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {          //Какой метод б�
     }
 } else {
     /** @var array $projects */
-    $page_content = include_template('add-form-task.php', ['projects' => $projects]);
+    $page_content = include_template('add-form-task.php', ['projects' => $projects, 'projects_user' => $projects_user]);
 }
 
 $layout_content = include_template('layout.php', [
