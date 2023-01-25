@@ -19,7 +19,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
             $page_content = include_template('error.php', ['error' => $error]);
         }
 
-        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';           //проверка на существование параметра запроса с идентификатором проекта
+        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';                  //проверка на существование параметра запроса с идентификатором проекта
         $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';      //проверка на существование параметра запроса search - форма поиска
         $task_id = isset($_GET['task_id']) ? htmlspecialchars($_GET['task_id']) : '';       //проверка на существование параметра запроса task_id - checkbox task
 
@@ -33,7 +33,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($project_id) {
             $tasks = getTasks_ProjectId_UserId($link, $project_id, $user_id);    //Функция обработки запроса на получение всех записей из tasks по проекту $project_id и для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'show_complete_tasks' => $show_complete_tasks,
@@ -43,7 +43,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($id === "") {
             $tasks = getTasks_UserId($link, $user_id);              //Функция обработки запроса на получение из БД данных из таблицы задач - tasks для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'show_complete_tasks' => $show_complete_tasks,
@@ -53,7 +53,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($search != '') {
             $tasks = getSearchTasks($link, $search, $user_id);      //Функция обработки запроса на получение из БД данных из таблицы задач - полнотекстовый поиск для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'search' => $search,
@@ -61,12 +61,22 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
                 'id' => $id
             ]);
         }
+
+        if ($task_id) {
+            $result = sqlSwitchTaskStatus($link, $task_id);
+            if (!$result) {
+                $error = http_response_code(404);
+                $page_content = include_template('error.php', ['error' => $error]);
+            } else {
+                header(header: 'Location: index.php?id=');       //используется для отправки HTTP-заголовка
+            }
+        }
     }
 }
 
 /** @var object $page_content шаблон блока страницы */
 /** @var array $projects массив проектов */
-$layout_content = include_template('layout.php', [
+$layout_content = include_template('layout.php', data: [
     'content' => $page_content,
     'projects' => $projects,
     'title' => 'Дела в порядке'

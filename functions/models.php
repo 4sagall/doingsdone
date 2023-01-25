@@ -151,3 +151,26 @@ function addNewProject(mysqli $link, $project, $user_id): bool
     $stmt = db_get_prepare_stmt($link, $sql, $project);                                //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
     return mysqli_stmt_execute($stmt);                                              //возвращает результат выполнения подготовленного утверждения
 }
+
+/**
+ * Функция обработки запроса, который инвертирует статус задачи (выполнена → не выполнена, не выполнена → выполнена)
+ * @param mysqli $link результат выполнения функции подключения к базе, @param array $tasks массив данных из формы
+ * @param $task_id
+ * @return bool|mysqli_result - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
+ */
+function sqlSwitchTaskStatus(mysqli $link, $task_id): bool|mysqli_result
+{
+    $sql1 = 'SELECT * FROM tasks WHERE id=' . $task_id;
+    $result = mysqli_query($link, $sql1);
+    if ($result) {
+        $task = mysqli_fetch_all($result, mode: MYSQLI_ASSOC);
+        $status = $task['0']['status'];
+    } else {
+        return mysqli_error($link);
+    }
+
+    $sql2 = 'UPDATE tasks SET status=' . ($status == 0? '1':'0') . ' WHERE id=' . $task_id;
+    return mysqli_query($link, $sql2);
+}
+
+
