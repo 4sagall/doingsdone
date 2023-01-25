@@ -64,6 +64,12 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($task_id) {
             $result = sqlSwitchTaskStatus($link, $task_id);
+            if (!$result) {
+                $error = http_response_code(404);
+                $page_content = include_template('error.php', ['error' => $error]);
+            } else {
+                header(header: 'Location: index.php?id=');       //используется для отправки HTTP-заголовка
+            }
         }
     }
 }
