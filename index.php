@@ -33,7 +33,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($project_id) {
             $tasks = getTasks_ProjectId_UserId($link, $project_id, $user_id);    //Функция обработки запроса на получение всех записей из tasks по проекту $project_id и для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'show_complete_tasks' => $show_complete_tasks,
@@ -43,7 +43,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($id === "") {
             $tasks = getTasks_UserId($link, $user_id);              //Функция обработки запроса на получение из БД данных из таблицы задач - tasks для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'show_complete_tasks' => $show_complete_tasks,
@@ -53,7 +53,7 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
 
         if ($search != '') {
             $tasks = getSearchTasks($link, $search, $user_id);      //Функция обработки запроса на получение из БД данных из таблицы задач - полнотекстовый поиск для user_id
-            $page_content = include_template('main.php', [
+            $page_content = include_template('main.php', data: [
                 'projects' => $projects,
                 'tasks' => $tasks,
                 'search' => $search,
@@ -63,21 +63,14 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
         }
 
         if ($task_id) {
-            $tasks = sqlSwitchTaskStatus($link, $task_id, $user_id);      //Функция обработки запроса на обновление таблицы задач - изменение статуса задачи task_id для user_id
-            $page_content = include_template('main.php', [
-                'projects' => $projects,
-                'tasks' => $tasks,
-                'search' => $search,
-                'show_complete_tasks' => $show_complete_tasks,
-                'id' => $id
-            ]);
+            $result = sqlSwitchTaskStatus($link, $task_id);
         }
     }
 }
 
 /** @var object $page_content шаблон блока страницы */
 /** @var array $projects массив проектов */
-$layout_content = include_template('layout.php', [
+$layout_content = include_template('layout.php', data: [
     'content' => $page_content,
     'projects' => $projects,
     'title' => 'Дела в порядке'
