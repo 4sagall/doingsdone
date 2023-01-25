@@ -19,8 +19,9 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
             $page_content = include_template('error.php', ['error' => $error]);
         }
 
-        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';           //проверка на существование параметра запроса с идентификатором проекта
+        $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';                  //проверка на существование параметра запроса с идентификатором проекта
         $search = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';      //проверка на существование параметра запроса search - форма поиска
+        $task_id = isset($_GET['task_id']) ? htmlspecialchars($_GET['task_id']) : '';   //проверка на существование параметра запроса task_id - checkbox задачи
 
         /** @var array $projects функция проверяет $id на соответствие с id полученных ранее проектов -> 12 */
         $project_id = getProjectById($id, $projects);
@@ -60,6 +61,8 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
                 'id' => $id
             ]);
         }
+
+        //if (!is_int($task_id))
     }
 }
 
