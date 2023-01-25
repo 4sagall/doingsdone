@@ -62,7 +62,16 @@ if (!isset($_SESSION['id'])) {          //проверка на существо
             ]);
         }
 
-        //if (!is_int($task_id))
+        if ($task_id) {
+            $tasks = sqlSwitchTaskStatus($link, $task_id, $user_id);      //Функция обработки запроса на обновление таблицы задач - изменение статуса задачи task_id для user_id
+            $page_content = include_template('main.php', [
+                'projects' => $projects,
+                'tasks' => $tasks,
+                'search' => $search,
+                'show_complete_tasks' => $show_complete_tasks,
+                'id' => $id
+            ]);
+        }
     }
 }
 
