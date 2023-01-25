@@ -50,7 +50,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
     }
 
     return $stmt;
-};
+}
 
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
@@ -71,7 +71,7 @@ function include_template($name, array $data = []) {
     require $name;
 
     return ob_get_clean();
-};
+}
 
 /**
  * Возвращает корректную форму множественного числа
@@ -120,10 +120,13 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
 }
 
 /** 
- * Функция вычисляет количество задач в каждой категории проектов. @param array - массив задач
- * @param  string - название проекта. @return number 
+ * Функция вычисляет количество задач в каждой категории проектов.
+ * @param array $tasks - массив задач
+ * @param  string $project - название проекта.
+ * @return int
  */
-function counter_tasks (array $tasks, $project) {
+function counter_tasks (array $tasks, $project): int
+{
     $amount = 0;
     foreach ($tasks as $key => $value) {
         if ($value['project_id'] == $project) {
@@ -132,7 +135,7 @@ function counter_tasks (array $tasks, $project) {
         else continue; 
     }
     return $amount;
-};
+}
 
 /** 
  * Функция рассчитывает сколько часов осталось до даты выполнения задачи.
@@ -148,7 +151,7 @@ function time_left ($date) {
     } else {
         return false;
     }
-};
+}
 
 /** 
  * Функция сравнивает переданный в нее id с имеющимися в массиве $projects, т.е. функция проверякт наличие проекта с данным id
@@ -160,7 +163,7 @@ function getProjectById($pid, $projects) {
         if ($value['id'] == $pid) return $pid;           
     }
     return null;
-};
+}
 
 /**
  * Функция енерирует капчу
