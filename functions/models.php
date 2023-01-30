@@ -20,12 +20,13 @@ function getProjects_CountTasks(mysqli $link, int $user_id): mysqli_result|bool
  * @param mysqli $link результат выполнения функции подключения к базе
  * @param $project_id
  * @param int $user_id - идентификатор пользователя; @param int $project_id - идентификатор проекта
+ * @param string $sql_filter
  * @return array|string - mysqli_fetch_all — Выбирает все строки из результирующего набора и помещает их в ассоциативный массив, обычный массив или в оба,
  * если результат запроса отрицательный возвращается шаблон ошибки
  */
-function getTasks_ProjectId_UserId(mysqli $link, $project_id, int $user_id): array|string
+function getTasks_ProjectId_UserId(mysqli $link, $project_id, int $user_id, string $sql_filter): array|string
 {
-    $sql = 'SELECT * FROM tasks WHERE project_id = ' . $project_id . ' AND user_id = ' . $user_id;
+    $sql = 'SELECT * FROM tasks WHERE project_id = ' . $project_id . ' AND user_id = ' . $user_id . $sql_filter;
 
     $result = mysqli_query($link, $sql);
     if ($result) {
@@ -39,12 +40,13 @@ function getTasks_ProjectId_UserId(mysqli $link, $project_id, int $user_id): arr
  * Функция обработки запроса к базе на получение всех записей таблицы tasks для пользователя user_id
  * @param mysqli $link
  * @param int $user_id - идентификатор пользователя; @param object $link результат выполнения функции подключения к базе
+ * @param string $sql_filter
  * @return array|string
  * если результат запроса отрицательный возвращается шаблон ошибки
  */
-function getTasks_UserId(mysqli $link, int $user_id): array|string
+function getTasks_UserId(mysqli $link, int $user_id, string $sql_filter): array|string
 {
-    $sql = 'SELECT * FROM tasks WHERE user_id=' . $user_id;
+    $sql = 'SELECT * FROM tasks WHERE user_id=' . $user_id . $sql_filter;
 
     $result = mysqli_query($link, $sql);                           //запрос на получение из БД данных из таблицы задач - tasks для user_id
     if ($result) {

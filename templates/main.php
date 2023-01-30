@@ -27,10 +27,10 @@
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-            <a href="/" class="tasks-switch__item">Повестка дня</a>
-            <a href="/" class="tasks-switch__item">Завтра</a>
-            <a href="/" class="tasks-switch__item">Просроченные</a>
+            <a href="index.php?tasks_switch=all" class="tasks-switch__item <?= ($tasks_switch === 'all') ? " tasks-switch__item--active": ""; ?>">Все задачи</a>
+            <a href="index.php?tasks_switch=agenda" class="tasks-switch__item <?= ($tasks_switch === 'agenda') ? " tasks-switch__item--active": ""; ?>">Повестка дня</a>
+            <a href="index.php?tasks_switch=tomorrow" class="tasks-switch__item <?= ($tasks_switch === 'tomorrow') ? " tasks-switch__item--active": ""; ?>">Завтра</a>
+            <a href="index.php?tasks_switch=end" class="tasks-switch__item <?= ($tasks_switch === 'end') ? " tasks-switch__item--active": ""; ?>">Просроченные</a>
         </nav>
 
         <label class="checkbox">
@@ -43,11 +43,11 @@
     <table class="tasks">
         <!-- Замените все содержимое этой таблицы данными из массива задач. Если у задачи статус «выполнен», то строке с этой задачей добавить класс "task--completed". Если задача из массива выполнена, а переменная $show_complete_tasks равна нулю, то такую задачу в списке мы не показываем (пропуск итерации цикла через ключевое слово continue). -->
         <?php foreach ($tasks as $task)  : ?>
-            <?php if ($task['status'] && $show_complete_tasks) continue; ?>
+            <?php if (!$task['status'] && $show_complete_tasks) continue; ?>
             <tr class="tasks__item task <?= $task['status']? " task--completed": ""; ?><?= time_left($task['date_end'])? " task--important": ""; ?>">
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
-                        <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="<?= $task['id']; ?>">
+                        <input class="checkbox__input visually-hidden task__checkbox" <?= ($task['status']) ? " checked ": ""; ?> type="checkbox" value="<?= $task['id']; ?>" >
                         <span class="checkbox__text"> <?= htmlspecialchars($task['name']); ?> </span>
                     </label>
                 </td>

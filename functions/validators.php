@@ -73,7 +73,7 @@ function validateDate(string $value): ?string
     if ($value) {
         if (!is_date_valid($value)) {
             return "Содержимое поля - дата завершения, должно быть датой в формате ГГГГ-ММ-ДД";
-        } elseif ($cur_time > $spec_time) {
+        } elseif ($cur_time > $spec_time && ($cur_time - $spec_time) < 2000) {
             return "Эта дата должна быть больше или равна текущей";
         }
     } else {
