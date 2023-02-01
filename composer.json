@@ -1,0 +1,9 @@
+{
+    "name": "sagall/doingsdone",
+    "description": "webapp doingsdone",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "respect/validation": "^2.2"
+    }
+}
