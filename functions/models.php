@@ -100,7 +100,6 @@ function addNewTask(mysqli $link, $task, $user_id): bool
     return mysqli_stmt_execute($stmt);                                //возвращает результат выполнения подготовленного утверждения
 }
 
-/** Запросы страницы авторизации сценарий auth.php */
 /**
  * Функция обработки запроса к базе на получение всех записей таблицы users
  * @param mysqli $link результат выполнения функции подключения к базе
@@ -123,20 +122,6 @@ function addNewUser(mysqli $link, $new_user): bool
     $sql = 'INSERT INTO users (email, password, name) VALUES (?,?,?)';     //подготовленное выражение запроса на внесение в БД пользователя
     $stmt = db_get_prepare_stmt($link, $sql, $new_user);                   //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
     return mysqli_stmt_execute($stmt);                                     //возвращает результат выполнения подготовленного утверждения
-}
-
-/**
- * Функция обработки запроса на получение из таблицы users имени и идентификатора пользователя
- * @param mysqli $link результат выполнения функции подключения к базе, @param array $new_user массив данных из формы
- * @param $user
- * @return false|mysqli_result - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
- */
-function get_NameIdUser(mysqli $link, $user): bool|mysqli_result
-{
-    $sql = 'SELECT id, name FROM users WHERE email=? OR password=?';
-    $stmt = db_get_prepare_stmt($link, $sql, $user);
-    mysqli_stmt_execute($stmt);
-    return mysqli_stmt_get_result($stmt);
 }
 
 /** Запросы страницы добавления проекта сценарий add-project.php */

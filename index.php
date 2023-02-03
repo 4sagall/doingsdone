@@ -2,10 +2,10 @@
 require_once('init.php');              //подключаем файл с данными для соединения с БД
 //$show_complete_tasks = random_int(0, 1);      // показывать или нет выполненные задачи
 
-if (!isset($_SESSION['id'])) {          //проверка на существование сессии
+if (!isset($_SESSION['user'])) {          //проверка на существование сессии
     header(header: 'Location: templates/guest.php');
 } else {
-    $user_id = $_SESSION['id'];
+    $user_id = $_SESSION['user']['id'];
     /** @var object $link в объекте хранятся данные соединения с базой данных */
     if (!$link) {
         $error = mysqli_connect_error();

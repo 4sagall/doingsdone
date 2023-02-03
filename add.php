@@ -1,6 +1,6 @@
 <?php
 require_once('init.php'); //подключаем файл с данными для соединения с БД
-$user_id = $_SESSION['id'];
+$user_id = $_SESSION['user']['id'];
 /** @var object $link в объекте хранятся данные соединения с базой данных */
 if (!$link) {
     $error = mysqli_connect_error();

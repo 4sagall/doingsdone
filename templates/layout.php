@@ -9,15 +9,15 @@
     <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
-<?php $classname = (isset($_SESSION['id'])) ? "" : " body-background"; ?>
+<?php $classname = (isset($_SESSION['user'])) ? "" : " body-background"; ?>
 <body   class="<?= $classname; ?>">
 <h1 class="visually-hidden"><?= $title; ?></h1>
 
 <div class="page-wrapper">
-    <?php $classname = (isset($_SESSION['id'])) ? " container--with-sidebar" : ""; ?>
+    <?php $classname = (isset($_SESSION['user'])) ? " container--with-sidebar" : ""; ?>
     <div class="container <?= $classname; ?>">
 
-        <?php if (!isset($_SESSION['id'])): ?>
+        <?php if (!isset($_SESSION['user'])): ?>
             <header class="main-header">
                 <a href="#">
                     <img src="../img/logo.png" width="153" height="42" alt="Логитип Дела в порядке">
@@ -38,7 +38,7 @@
 
                     <div class="main-header__side-item user-menu">
                         <div class="user-menu__data">
-                            <p> <?= $_SESSION['name']; ?> </p>
+                            <p> <?= $_SESSION['user']['name']; ?> </p>
 
                             <a href="logout.php">Выйти</a>
                         </div>
@@ -61,7 +61,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <?php if (!isset($_SESSION['id'])): ?>
+        <?php if (!isset($_SESSION['user'])): ?>
             <p>Хочешь сделать лучше — сделай сам.</p>
         <?php else: ?>
             <a class="main-footer__button button button--plus" href="add.php">Добавить задачу</a>

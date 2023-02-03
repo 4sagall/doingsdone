@@ -4,6 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "respect/validation": "^2.2"
+        "respect/validation": "^2.2",
+      "ext-mysqli": "*"
     }
 }

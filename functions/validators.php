@@ -139,46 +139,6 @@ function validate_Name(string $value, $users): ?string
     return null;
 }
 
-/** Валидация формы из сценария auth.php */
-/**
- * Функция, которая сравнивает email с имеющимися в базе зарегистрированных пользователей
- * @param string $value - принимает строку, определяет введен ли email и является ли он корректным с использованием стандартной функции filter_var
- * @param $users
- * @return string|null - возвращает текст ошибки или null - если ошибки авторизации нет
- */
-function auth_Email (string $value, $users): ?string
-{
-    if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-        foreach ($users as $user) {
-            if ($value == $user['email']) {
-                return null;
-            }
-        }
-        return "Указанный e-mail не зарегистрирован";
-    } else {
-        return "Введен не корректный адрес e-mail";
-    }
-}
-
-/**
- * Функция для валидации пароля на пустую строку и на возможность хеширования с помощью стандартной функции password_hash
- * @param string $value - принимает строку, определяет введен ли пароль и хеширует его
- * @param $users
- * @return string|null - возвращает строку ошибки или null - если ошибки валидации нет
- */
-function auth_Pass(string $value, $users): ?string
-{
-    if (!empty($value)) {
-        foreach ($users as $user) {
-            if (password_verify($value, $user['password'])) {
-                return null;
-            }
-        }
-        return "Введен неверный пароль";
-    }
-    return null;
-}
-
 /** Валидация формы из сценария add-project.php */
 /**
  * Функция для валидации названия проекта
@@ -195,7 +155,7 @@ function validateProject(string $value, $max, array $projects_user): ?string
             return "Название проекта - не более " . $max . " символов";
         } else {
             foreach ($projects_user as $project) {
-                if ($value === $project['name']) {
+                if (strnatcasecmp($value, $project['name']) == 0) {
                     return "Такой проект уже существует. Выберете другое название проекта";
                 }
             }
