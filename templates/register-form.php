@@ -1,5 +1,4 @@
 <div class="content">
-
     <section class="content__side">
         <p class="content__side-info">Сервис «Дела в Порядке» <br>доступен для использования <br>только зарегистрированным пользователям.</p>
     </section>

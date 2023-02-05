@@ -111,19 +111,6 @@ function getAllUsers(mysqli $link): mysqli_result|bool
     return mysqli_query($link, $sql);
 }
 
-/**
- * Функция обработки запроса на добавление в таблицу users нового пользователя
- * @param mysqli $link результат выполнения функции подключения к базе, @param array $new_user массив данных из формы
- * @param $new_user
- * @return bool - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
- */
-function addNewUser(mysqli $link, $new_user): bool
-{
-    $sql = 'INSERT INTO users (email, password, name) VALUES (?,?,?)';     //подготовленное выражение запроса на внесение в БД пользователя
-    $stmt = db_get_prepare_stmt($link, $sql, $new_user);                   //функция - создает подготовленное выражение на основе готового SQL запроса и переданных данных
-    return mysqli_stmt_execute($stmt);                                     //возвращает результат выполнения подготовленного утверждения
-}
-
 /** Запросы страницы добавления проекта сценарий add-project.php */
 /**
 * Функция обработки запроса на добавление в таблицу projects нового проекта
