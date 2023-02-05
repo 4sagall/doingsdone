@@ -82,63 +82,6 @@ function validateDate(string $value): ?string
     return null;
 }
 
-/**  Валидация формы из сценария register.php */
-/**
- * Функция для валидации email
- * @param string $value - принимает строку, определяет введен ли email и является ли он корректным
- * с использованием стандартной функции filter_var
- * @param $users
- * @return string|null - возвращает текст ошибки или null - если ошибки валидации нет
- */
-function validate_Email(string $value, $users): ?string
-{
-    if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
-        foreach ($users as $user) {
-            if ($value === $user['email']) {
-                return "Пользователь с указанным e-mail уже зарегистрирован. Введите другой e-mail";
-            }
-        }
-    } else {
-        return "Введен не корректный адрес e-mail";
-    }
-    return null;
-}
-
-/**
- * Функция для валидации пароля на пустую строку и на возможность хеширования с помощью стандартной функции password_hash
- * @param string $value - принимает строку, определяет введен ли пароль и хеширует его
- * @return string|null - возвращает строку ошибки или null - если ошибки валидации нет
- */
-function validate_Pass(string $value): ?string
-{
-    if (!empty($value)) {
-        if (password_hash($value, PASSWORD_DEFAULT)) {
-            return null;
-        } else {
-            return "Введенный пароль некорректен, поскольку не может быть зашифрован";
-        }
-    }
-    return null;
-}
-
-/**
- * Функция для валидации имени пользователя на пустую строку и длину названия задачи
- * @param string $value - принимает строку и @param int $max - целое число, определяет введено ли название и сравнивает длину строки со значением
- * @param $users
- * @return string|null - возвращает строку
- */
-function validate_Name(string $value, $users): ?string
-{
-    if (!empty($value)) {
-        foreach ($users as $user) {
-            if ($value === $user['name']) {
-                return "Пользователь с именем " . $value . " уже зарегистрирован. Введите другое имя";
-            }
-        }
-    }
-    return null;
-}
-
 /** Валидация формы из сценария add-project.php */
 /**
  * Функция для валидации названия проекта

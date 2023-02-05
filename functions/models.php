@@ -100,17 +100,6 @@ function addNewTask(mysqli $link, $task, $user_id): bool
     return mysqli_stmt_execute($stmt);                                //возвращает результат выполнения подготовленного утверждения
 }
 
-/**
- * Функция обработки запроса к базе на получение всех записей таблицы users
- * @param mysqli $link результат выполнения функции подключения к базе
- * @return bool|mysqli_result - возвращает объект mysqli_result с буферизованным набором результатов (по умолчанию)
- */
-function getAllUsers(mysqli $link): mysqli_result|bool
-{
-    $sql = 'SELECT * FROM users';
-    return mysqli_query($link, $sql);
-}
-
 /** Запросы страницы добавления проекта сценарий add-project.php */
 /**
 * Функция обработки запроса на добавление в таблицу projects нового проекта
