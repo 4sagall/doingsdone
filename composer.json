@@ -5,6 +5,6 @@
     "license": "MIT",
     "require": {
         "respect/validation": "^2.2",
-      "ext-mysqli": "*"
+        "swiftmailer/swiftmailer": "^6.3"
     }
 }
