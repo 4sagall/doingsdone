@@ -37,6 +37,7 @@
                     <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить задачу</a>
 
                     <div class="main-header__side-item user-menu">
+                        <img src="img/user-pic.jpg" width="42" height="42" alt="<?= $_SESSION['user']['name']; ?>">
                         <div class="user-menu__data">
                             <p> <?= $_SESSION['user']['name']; ?> </p>
 
